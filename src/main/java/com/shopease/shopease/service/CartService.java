@@ -58,8 +58,10 @@ public class CartService {
             newItem.setCart(cart);
             cartItemRepository.save(newItem);
         }
-
-        return cartRepository.findById(cart.getId()).get();
+        cart.setItems(cartItemRepository.findAll().stream()
+                .filter(item -> item.getCart().getId().equals(cart.getId()))
+                .toList());
+        return cart;
     }
 
     public void removeItemFromCart(Long cartItemId) {
